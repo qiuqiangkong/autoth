@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="autoth-qiuqiangkong", # Replace with your own username
-    version="0.0.1",
+    version="0.0.2",
     author="Qiuqiang Kong",
     author_email="qiuqiangkong@gmail.com",
     description="Automatic threshold optimization",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/qiuqiangkong/autoth",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

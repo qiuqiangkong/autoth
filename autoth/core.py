@@ -3,13 +3,28 @@ import time
         
 
 class HyperParamsOptimizer(object):
-    def __init__(self, score_calculator, learning_rate=1e-2, epochs=100):
+    def __init__(self, score_calculator, learning_rate=1e-2, epochs=100, 
+        step=0.01, max_search=5):
+        """Hyper parameters optimizer. Parameters are optimized using gradient
+        descend methods by using the numerically calculated graident: 
+        gradient: f(x + h) - f(x) / (h)
+
+        Args:
+          score_calculator: object. See ScoreCalculatorExample in example.py as 
+              an example.
+          learning_rate: float
+          epochs: int
+          step: float, equals h for calculating gradients
+          max_search: int, if plateaued, then search for at most max_search times
+        """
         
         self.score_calculator = score_calculator
         self.learning_rate = learning_rate
         self.epochs = epochs
         self.optimizer = Adam()
         self.optimizer.alpha = learning_rate
+        self.step = step
+        self.max_search = max_search
 
     def do_optimize(self, init_params):
         print('Optimizing hyper parameters ...')
@@ -39,22 +54,21 @@ class HyperParamsOptimizer(object):
           grads: vector
         """
         score = self.score_calculator(params)
-        delta = 0.01
+        step = self.step
         grads = []
 
         for k, param in enumerate(params):
             new_params = params.copy()
-            delta = 0.01
             cnt = 0
-            while cnt < 10:
+            while cnt < self.max_search:
                 cnt += 1
-                new_params[k] += delta
+                new_params[k] += self.step
                 new_score = self.score_calculator(new_params)
 
                 if new_score != score:
                     break
 
-            grad = (new_score - score) / (delta * cnt)
+            grad = (new_score - score) / (step * cnt)
             grads.append(grad)
 
         return score, grads

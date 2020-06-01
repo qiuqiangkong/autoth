@@ -19,8 +19,13 @@ class ScoreCalculatorExample(object):
         self.target = random_state.randint(0, 2, (self.N, self.classes_num))
 
     def __call__(self, params):
-        """Use hyper parameters to threshold prediction to obtain output.
-        Then, the scores are calculated between output and target.
+        """Parameters (such as thresholds) are used calculate score.
+
+        Args:
+          params: list of float
+
+        Returns:
+          score: float
         """
         thresholds = params
         output = np.zeros_like(self.prediction)
@@ -58,7 +63,8 @@ if __name__ == '__main__':
 
     # Hyper parameter optimizer. This class will optimize hyper parameters to
     # maximize score calculated from score_calculator.
-    hyper_params_opt = HyperParamsOptimizer(score_calculator, learning_rate=1e-2, epochs=10)
+    hyper_params_opt = HyperParamsOptimizer(score_calculator, 
+        learning_rate=1e-2, epochs=10, step=0.01)
 
     # Optimize hyper parameters
     (opt_score, opt_params) = hyper_params_opt.do_optimize(init_params=init_params)
